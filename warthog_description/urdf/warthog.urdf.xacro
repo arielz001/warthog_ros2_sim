@@ -38,6 +38,7 @@
       - sand
   -->
 
+
   <xacro:macro name="wheel_inertia" params="m r h">
     <inertia ixx="${m*(3*r*r+h*h)/12}" ixy="0" ixz="0"
              iyy="${m*r*r/2}" iyz="0"
@@ -79,12 +80,14 @@
         </geometry>
       </collision>
     </link>
+    
     <joint name="${prefix}_${side}_wheel_joint" type="continuous">
       <parent link="${side}_diff_unit_link"/>
       <child link="${prefix}_${side}_wheel_link"/>
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0"/>
     </joint>
+
     <gazebo reference="${prefix}_${side}_wheel_link">
       <selfCollide>false</selfCollide>
       <mu1>0.5</mu1>
@@ -105,6 +108,8 @@
       </actuator>
     </transmission>
   </xacro:macro>
+
+
 
     <xacro:macro name="track" params="prefix side *joint_pose">
         <link name="${prefix}_${side}_track_link">
@@ -138,12 +143,14 @@
             </geometry>
         </collision>
         </link>
+       
         <joint name="${prefix}_${side}_wheel_joint" type="continuous">
             <parent link="${side}_diff_unit_link"/>
             <child link="${prefix}_${side}_wheel_link"/>
             <xacro:insert_block name="joint_pose" />
             <axis xyz="0 1 0"/>
         </joint>
+        
         <transmission name="${prefix}_${side}_wheel_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="${prefix}_${side}_wheel_joint">
@@ -155,6 +162,7 @@
         </actuator>
         </transmission>
     </xacro:macro>
+
 
     <xacro:unless value="$(optenv WARTHOG_TRACKS 0)">
         <xacro:wheel prefix="front" side="left">
@@ -274,6 +282,7 @@
     <!-- ======================================================= -->
 
     <xacro:macro name="diff_unit" params="prefix side">
+    
         <link name="${prefix}_diff_unit_link">
 
         <inertial>
@@ -435,6 +444,10 @@
             </visual>
         </gazebo>
 
+        <!-- ======================================================= -->
+        <!--                Taillight                                -->
+        <!-- ======================================================= -->
+
         <link name="${prefix}_diff_unit_taillight_link">
             <visual>
                 <origin xyz="0 ${side*-0.029} 0" rpy="0 0 ${side*PI}"/>
@@ -489,21 +502,8 @@
     </xacro:macro>
 
 
-
     <xacro:diff_unit prefix="left" side="1"/>
     <xacro:diff_unit prefix="right" side="-1"/>
 
-    <gazebo>
-      <!-- inserted at the top level of the <model> tag -->
-      <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
-        <render_engine>ogre</render_engine>
-      </plugin>
-      <!-- <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-        <ros>
-          <namespace>${namespace}</namespace>
-        </ros>
-        <parameters>$(find foxy_bringup)/config/controllers.yaml</parameters>
-      </plugin> -->
-    </gazebo>
 
 </robot>

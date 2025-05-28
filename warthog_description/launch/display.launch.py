@@ -40,40 +40,11 @@ def launch_setup(context):
         output="log",
         parameters=[robot_description], 
     )
-
-
-    # spawn_urdf_node = Node(
-    #     package="ros_gz_sim",
-    #     executable="create",
-    #     arguments=[
-    #         "-name", "warthog_description",
-    #         "-topic", "robot_description",
-    #         "-x", "0.0", "-y", "0.0", "-z", "0.5", "-Y", "0.0"  # Initial spawn position
-    #     ],
-    #     output="screen",
-    #     parameters=[
-    #         {'use_sim_time': True},
-    #     ]
-    # )
     
-    gazebo_world_path = PathJoinSubstitution([
-        FindPackageShare("warthog_description"),  # o el paquete donde tengas el mundo
-        "worlds",
-        "groundPlane.sdf"
-    ])
-
-    gazebo_node = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=[gazebo_world_path.perform(context)],
-        output="screen"
-    )
     return [
-        gazebo_node,
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
         rviz_node,
-        # spawn_urdf_node
     ]
 
 def generate_launch_description():

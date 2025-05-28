@@ -74,29 +74,44 @@ def launch_args(context) -> list[LaunchDescriptionEntity]:
 
 def launch_setup(context) -> list[LaunchDescriptionEntity]:
 
+
+    urdf_path = PathJoinSubstitution([FindPackageShare("warthog_description"), "urdf", "warthog.urdf.xacro"])
+
+    robot_description = {"robot_description": xacro.process_file(urdf_path.perform(context)).toxml()}
+
+
     # use_sim_time = True if LaunchConfiguration("system").perform(context) != 'robot' else False 
 
-    robot_desc_content = xacro.process_file(
-        PathJoinSubstitution([FindPackageShare("warthog_description"), "urdf", "warthog.urdf.xacro"]).perform(context),
-        mappings={
-            "robot_name": LaunchConfiguration("robot_name").perform(context),
-            "system": LaunchConfiguration("system").perform(context),
-            "distro": os.getenv("ROS_DISTRO")
-        }
-    ).toxml()
+    # robot_desc_content = xacro.process_file(
+    #     PathJoinSubstitution([FindPackageShare("warthog_description"), "urdf", "warthog.urdf.xacro"]).perform(context),
+    #     mappings={
+    #         "robot_name": LaunchConfiguration("robot_name").perform(context),
+    #         "system": LaunchConfiguration("system").perform(context),
+    #         "distro": os.getenv("ROS_DISTRO")
+    #     }
+    # ).toxml()
+
+
+
+    # robot_state_publisher_node = Node(
+    #     package="robot_state_publisher",
+    #     executable="robot_state_publisher",
+    #     name="robot_state_publisher",
+    #     output="both",
+    #     parameters=[
+    #         {"robot_description": robot_desc_content},
+    #         {"use_sim_time": LaunchConfiguration("use_sim_time")}
+    #         # {"frame_prefix": f'{LaunchConfiguration("robot_name").perform(context)}/'},
+    #     ]
+    # )
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        name="robot_state_publisher",
         output="both",
-        parameters=[
-            {"robot_description": robot_desc_content},
-            {"use_sim_time": LaunchConfiguration("use_sim_time")}
-            # {"frame_prefix": f'{LaunchConfiguration("robot_name").perform(context)}/'},
-        ]
+        parameters=[robot_description],
     )
-
+    
     controllers = GroupAction(
         actions=[
             Node(
@@ -110,6 +125,23 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
             ),
         ]
     )
+    
+    
+    # control_node = Node(
+    #     package="controller_manager",
+    #     executable="ros2_control_node",
+    #     namespace="warthog",
+    #     parameters=[
+    #         robot_description,
+    #         PathJoinSubstitution([
+    #             FindPackageShare("warthog_bringup"),
+    #             "config",
+    #             "controllers.yaml"
+    #         ])
+    #     ],
+    #     output="screen"
+    # )
+
 
     gz = GroupAction(
         actions=[
@@ -165,41 +197,51 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
         condition=LaunchConfigurationEquals("system", "gz")
     )
 
-    robot_localization_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_node',
-        output='screen',
-        parameters=[
-            PathJoinSubstitution([
-                FindPackageShare("warthog_bringup"),
-                "config",
-                "localization.yaml"
-            ]),
-            {"use_sim_time": LaunchConfiguration("use_sim_time")}
-        ],
-        condition=IfCondition(LaunchConfiguration("robot_localization"))
-    )
+    # robot_localization_node = Node(
+    #     package='robot_localization',
+    #     executable='ekf_node',
+    #     name='ekf_node',
+    #     output='screen',
+    #     parameters=[
+    #         PathJoinSubstitution([
+    #             FindPackageShare("warthog_bringup"),
+    #             "config",
+    #             "localization.yaml"
+    #         ]),
+    #         {"use_sim_time": LaunchConfiguration("use_sim_time")}
+    #     ],
+    #     condition=IfCondition(LaunchConfiguration("robot_localization"))
+    # )
 
-    slam_toolbox = IncludeLaunchDescription(
-        PathJoinSubstitution(
-            [
-                FindPackageShare("slam_toolbox"),
-                "launch",
-                "online_async_launch.py",
-            ]
-        ),
-        launch_arguments={
-            "slam_params_file": PathJoinSubstitution([
-                FindPackageShare("warthog_bringup"),
-                "config",
-                "slam_toolbox.yaml"
-            ]),
-            "use_sim_time": LaunchConfiguration("use_sim_time"),
-        }.items(),
-        condition=IfCondition(LaunchConfiguration("slam_toolbox"))
-    )
+    # slam_toolbox = IncludeLaunchDescription(
+    #     PathJoinSubstitution(
+    #         [
+    #             FindPackageShare("slam_toolbox"),
+    #             "launch",
+    #             "online_async_launch.py",
+    #         ]
+    #     ),
+    #     launch_arguments={
+    #         "slam_params_file": PathJoinSubstitution([
+    #             FindPackageShare("warthog_bringup"),
+    #             "config",
+    #             "slam_toolbox.yaml"
+    #         ]),
+    #         "use_sim_time": LaunchConfiguration("use_sim_time"),
+    #     }.items(),
+    #     condition=IfCondition(LaunchConfiguration("slam_toolbox"))
+    # )
 
+    # rviz2 = Node(
+    #     package="rviz2",
+    #     executable="rviz2",
+    #     arguments=['-d', LaunchConfiguration("rviz_config")],
+    #     name="rviz2",
+    #     output="log",
+    #     parameters=[robot_description], 
+    # )
+    
+    
     rviz2 = Node(
         package='rviz2',
         executable='rviz2',
@@ -211,16 +253,24 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
         ]
     )
 
+    joint_state_publisher_gui_node = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        name='joint_state_publisher_gui',
+    )
+    
+    
     return [
         PushRosNamespace(LaunchConfiguration("robot_name")),
+        rviz2,
         robot_state_publisher_node,
-        controllers,
+        joint_state_publisher_gui_node,
         gz,
+        controllers
+        # control_node,
         # robot_localization_node,
         # slam_toolbox,
-        rviz2
     ]
-
 
 def generate_launch_description() -> LaunchDescription:
 

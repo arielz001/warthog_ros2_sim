@@ -15,6 +15,7 @@ else:
     os.environ['GAZEBO_MODEL_PATH'] =  pkg_share_path
     
 print(f"GAZEBO_MODEL_PATH: {os.environ['GAZEBO_MODEL_PATH']}")
+
     
 def launch_args(context) -> list[LaunchDescriptionEntity]:
 
@@ -40,7 +41,7 @@ def launch_args(context) -> list[LaunchDescriptionEntity]:
 
     declared_args.append(DeclareLaunchArgument(
         "pos_z",
-        default_value="0.1",
+        default_value="0.4",
         description="Start position in z axis (only for simulation environments)."
     ))
 
@@ -105,6 +106,7 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
             ]
         ),
         launch_arguments={
+            "rviz_start": LaunchConfiguration("rviz_start"),
             "robot_name": LaunchConfiguration("robot_name"),
             "pos_x": LaunchConfiguration("pos_x"),
             "pos_y": LaunchConfiguration("pos_y"),
@@ -112,13 +114,11 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
             "system": LaunchConfiguration("system"),
             "world": PathJoinSubstitution([FindPackageShare("warthog_description"), "worlds", f"{LaunchConfiguration('world').perform(context)}.sdf"]),
             "use_sim_time": use_sim_time,
-            "robot_localization": LaunchConfiguration("robot_localization"),
-            "slam_toolbox": LaunchConfiguration("slam_toolbox"),
-            "rviz_start": LaunchConfiguration("rviz_start")
+            # "robot_localization": LaunchConfiguration("robot_localization"),
+            # "slam_toolbox": LaunchConfiguration("slam_toolbox"),
         }.items(),
         condition=LaunchConfigurationEquals("system", "gz")
     )
-
 
     return [
         info_msg,

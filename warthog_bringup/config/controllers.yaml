@@ -1,61 +1,129 @@
-/**/controller_manager:
-  ros__parameters:
-    update_rate: 100  # Hz
+# /**/controller_manager:
+#   ros__parameters:
+#     update_rate: 100  # Hz
 
-    joint_state_broadcaster:
-      type: joint_state_broadcaster/JointStateBroadcaster
+#     joint_state_broadcaster:
+#       type: joint_state_broadcaster/JointStateBroadcaster
 
-    diff_drive_base_controller:
-      type: diff_drive_controller/DiffDriveController
+#     diff_drive_base_controller:
+#       type: diff_drive_controller/DiffDriveController
 
-/**/diff_drive_base_controller:
-  ros__parameters:
-    left_wheel_names: ["left_wheel_joint"]
-    right_wheel_names: ["right_wheel_joint"]
+# /**/diff_drive_base_controller:
+#   ros__parameters:
+#     left_wheel_names: ["left_wheel_joint"]
+#     right_wheel_names: ["right_wheel_joint"]
 
-    wheel_separation: 0.45
-    #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
-    wheel_radius: 0.05
+#     wheel_separation: 0.45
+#     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
+#     wheel_radius: 0.05
 
-    wheel_separation_multiplier: 1.0
-    left_wheel_radius_multiplier: 1.0
-    right_wheel_radius_multiplier: 1.0
+#     wheel_separation_multiplier: 1.0
+#     left_wheel_radius_multiplier: 1.0
+#     right_wheel_radius_multiplier: 1.0
 
-    tf_frame_prefix_enable: false
-    # tf_frame_prefix: "prefix"
-    publish_rate: 50.0
-    odom_frame_id: odom
-    base_frame_id: base_link
-    pose_covariance_diagonal : [0.001, 0.001, 0.0, 0.0, 0.0, 0.01]
-    twist_covariance_diagonal: [0.001, 0.0, 0.0, 0.0, 0.0, 0.01]
+#     tf_frame_prefix_enable: false
+#     # tf_frame_prefix: "prefix"
+#     publish_rate: 50.0
+#     odom_frame_id: odom
+#     base_frame_id: base_link
+#     pose_covariance_diagonal : [0.001, 0.001, 0.0, 0.0, 0.0, 0.01]
+#     twist_covariance_diagonal: [0.001, 0.0, 0.0, 0.0, 0.0, 0.01]
 
 
-    open_loop: false
-    enable_odom_tf: true
+#     open_loop: false
+#     enable_odom_tf: true
 
-    cmd_vel_timeout: 0.5
-    # publish_limited_velocity: true
-    use_stamped_vel: true
-    #velocity_rolling_window_size: 10
+#     cmd_vel_timeout: 0.5
+#     # publish_limited_velocity: true
+#     use_stamped_vel: true
+#     #velocity_rolling_window_size: 10
 
-    # Velocity and acceleration limits
+#     # Velocity and acceleration limits
 
-    # Whenever a min_* is unspecified, default to -max_*
-    linear.x.has_velocity_limits: true
-    linear.x.has_acceleration_limits: true
-    linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
-    linear.x.max_acceleration: 1.0
-    linear.x.max_jerk: 0.0
-    linear.x.min_jerk: 0.0
+#     # Whenever a min_* is unspecified, default to -max_*
+#     linear.x.has_velocity_limits: true
+#     linear.x.has_acceleration_limits: true
+#     linear.x.has_jerk_limits: false
+#     linear.x.max_velocity: 1.0
+#     linear.x.min_velocity: -1.0
+#     linear.x.max_acceleration: 1.0
+#     linear.x.max_jerk: 0.0
+#     linear.x.min_jerk: 0.0
 
-    angular.z.has_velocity_limits: true
-    angular.z.has_acceleration_limits: true
-    angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 1.0
-    angular.z.min_velocity: -1.0
-    angular.z.max_acceleration: 1.0
-    angular.z.min_acceleration: -1.0
-    angular.z.max_jerk: 0.0
-    angular.z.min_jerk: 0.0
+#     angular.z.has_velocity_limits: true
+#     angular.z.has_acceleration_limits: true
+#     angular.z.has_jerk_limits: false
+#     angular.z.max_velocity: 1.0
+#     angular.z.min_velocity: -1.0
+#     angular.z.max_acceleration: 1.0
+#     angular.z.min_acceleration: -1.0
+#     angular.z.max_jerk: 0.0
+#     angular.z.min_jerk: 0.0
+
+
+warthog_joint_publisher:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 50
+
+warthog_velocity_controller:
+  type: "diff_drive_controller/DiffDriveController"
+  left_wheel: ['front_left_wheel_joint', 'rear_left_wheel_joint']
+  right_wheel: ['front_right_wheel_joint', 'rear_right_wheel_joint']
+  publish_rate: 50
+  pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 0.03]
+  twist_covariance_diagonal: [0.001, 0.001, 0.001, 1000000.0, 1000000.0, 0.03]
+  cmd_vel_timeout: 0.25
+  velocity_rolling_window_size: 2
+
+  # Publish final output cmd_vel to /warthog_velocity_controller/cmd_vel_out
+  publish_cmd: true
+
+  # Odometry fused with IMU is published by robot_localization, so
+  # no need to publish a TF based on encoders alone.
+  enable_odom_tf: false
+
+  # Wheel separation and radius multipliers
+  # Auto read will fail due to suspension link and using diagonal since the platform is skid-steer
+  wheel_separation: 1.5
+  wheel_separation_multiplier: 1.125 # default: 1.0
+  wheel_radius_multiplier    : 1.0 # default: 1.0
+
+
+
+  # Velocity and acceleration limits
+  # Whenever a min_* is unspecified, default to -max_*
+  linear:
+    x:
+      has_velocity_limits    : true
+      max_velocity           : 5.0   # m/s
+      has_acceleration_limits: true
+      max_acceleration       : 50.0   # m/s^2
+  angular:
+    z:
+      has_velocity_limits    : true
+      max_velocity           : 4.0   # rad/s
+      has_acceleration_limits: true
+      max_acceleration       : 40.0   # rad/s^2
+
+# ekf_localization:
+#   frequency: 50
+#   two_d_mode: true
+#   odom0: /warthog_velocity_controller/odom
+#   odom0_config: [false, false, false,
+#                  false, false, false,
+#                  true, true, false,
+#                  false, false, true,
+#                  false, false, false]
+#   odom0_differential: false
+#   imu0: /imu/data
+#   imu0_config: [false, false, false,
+#                 false, false, false,
+#                 false, false, false,
+#                 false, false, true,
+#                 true, true, false]
+#   imu0_differential: false
+#   odom_frame: odom
+#   base_link_frame: base_link
+#   world_frame: odom
+
+#   two_d_mode: true
