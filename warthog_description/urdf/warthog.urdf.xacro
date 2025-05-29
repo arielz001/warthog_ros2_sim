@@ -73,7 +73,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/wheel.stl" />
+            <mesh filename="package://warthog_description/meshes/wheel.stl" />
             </geometry>
             <material name="dark_grey" />
         </visual>
@@ -123,14 +123,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/tracks.dae" />
+            <mesh filename="package://warthog_description/meshes/tracks.dae" />
             </geometry>
             <material name="dark_grey" />
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/tracks_collision.stl" />
+            <mesh filename="package://warthog_description/meshes/tracks_collision.stl" />
             </geometry>
         </collision>
         </link>
@@ -228,21 +228,21 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/chassis.stl" />
+                <mesh filename="package://warthog_description/meshes/chassis.stl" />
             </geometry>
             <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
         </visual>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/e-stop.stl" />
+                <mesh filename="package://warthog_description/meshes/e-stop.stl" />
             </geometry>
             <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/chassis-collision.stl" />
+                <mesh filename="package://warthog_description/meshes/chassis-collision.stl" />
             </geometry>
         </collision>
     </link>
@@ -256,21 +256,21 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/diff-link.stl" />
+                <mesh filename="package://warthog_description/meshes/diff-link.stl" />
             </geometry>
             <material name="light_grey" />
         </visual>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/susp-link.stl" />
+                <mesh filename="package://warthog_description/meshes/susp-link.stl" />
             </geometry>
             <material name="light_grey" />
         </visual>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="model://warthog_description/meshes/susp-link.stl" />
+                <mesh filename="package://warthog_description/meshes/susp-link.stl" />
             </geometry>
             <material name="light_grey" />
         </visual>
@@ -302,7 +302,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 ${side*PI/2}"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/rocker.stl" />
+            <mesh filename="package://warthog_description/meshes/rocker.stl" />
             </geometry>
             <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
         </visual>
@@ -310,14 +310,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 ${side*PI/2}"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/fenders.stl" />
+            <mesh filename="package://warthog_description/meshes/fenders.stl" />
             </geometry>
             <material name="yellow"><color rgba="0.95 0.816 0.082 1.0" /></material> 
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 ${side*PI/2}"/>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/fenders-collision.stl" />
+            <mesh filename="package://warthog_description/meshes/fenders-collision.stl" />
             </geometry>
         </collision>
         <collision>
@@ -345,7 +345,7 @@
         <link name="${prefix}_diff_unit_buttons_link">
         <visual>
             <geometry>
-            <mesh filename="model://warthog_description/meshes/buttons.stl"/>
+            <mesh filename="package://warthog_description/meshes/buttons.stl"/>
             </geometry>
             <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
         </visual>
@@ -371,7 +371,7 @@
             <visual>
                 <material name="light_grey" />
                 <geometry>
-                <mesh filename="model://warthog_description/meshes/antenna_${prefix}.stl"/>
+                <mesh filename="package://warthog_description/meshes/antenna_${prefix}.stl"/>
                 </geometry>
             </visual>
             <collision>
@@ -396,7 +396,7 @@
                 <visual>
                 <material name="light_grey"/>
                 <geometry>
-                    <mesh filename="model://warthog_description/meshes/antenna_estop.stl"/>
+                    <mesh filename="package://warthog_description/meshes/antenna_estop.stl"/>
                 </geometry>
                 </visual>
                 <collision>
@@ -422,14 +422,14 @@
             <visual>
                 <origin xyz="0 ${side*-0.029} 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://warthog_description/meshes/light.stl" />
+                    <mesh filename="package://warthog_description/meshes/light.stl" />
                 </geometry>
                 <material name="white"><color rgba="0.9 0.9 0.9 1.0" /></material>
             </visual>
             <collision>
                 <origin xyz="0 ${side*-0.022} 0" rpy="0 0 0"/>
                 <geometry>
-                <mesh filename="model://warthog_description/meshes/light-collision.stl" />
+                <mesh filename="package://warthog_description/meshes/light-collision.stl" />
                 </geometry>
                 <material name="white"><color rgba="0.9 0.9 0.9 1.0" /></material>
             </collision>
@@ -459,14 +459,14 @@
             <visual>
                 <origin xyz="0 ${side*-0.029} 0" rpy="0 0 ${side*PI}"/>
                 <geometry>
-                <mesh filename="model://warthog_description/meshes/light.stl" />
+                <mesh filename="package://warthog_description/meshes/light.stl" />
                 </geometry>
                 <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
             </visual>
             <collision>
                 <origin xyz="0 ${side*-0.022} 0" rpy="0 0 ${side*PI}"/>
                 <geometry>
-                <mesh filename="model://warthog_description/meshes/light-collision.stl" />
+                <mesh filename="package://warthog_description/meshes/light-collision.stl" />
                 </geometry>
                 <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
             </collision>
