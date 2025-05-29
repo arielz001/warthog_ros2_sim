@@ -8,14 +8,6 @@ from launch_ros.actions import Node
 
 from ament_index_python import get_package_prefix
 
-pkg_share_path = os.pathsep + os.path.join(get_package_prefix('warthog_description'), 'share')
-if 'GAZEBO_MODEL_PATH' in os.environ:
-    os.environ['GAZEBO_MODEL_PATH'] += pkg_share_path
-else:
-    os.environ['GAZEBO_MODEL_PATH'] =  pkg_share_path
-    
-print(f"GAZEBO_MODEL_PATH: {os.environ['GAZEBO_MODEL_PATH']}")
-
     
 def launch_args(context) -> list[LaunchDescriptionEntity]:
 
