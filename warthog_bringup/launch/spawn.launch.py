@@ -74,7 +74,6 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
     ).toxml()
 
 
-
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -155,18 +154,18 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
         ]
     )
 
-    joint_state_publisher_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui',
-    )
+    # joint_state_publisher_gui_node = Node(
+    #     package='joint_state_publisher_gui',
+    #     executable='joint_state_publisher_gui',
+    #     name='joint_state_publisher_gui',
+    # )
     
     
     return [
         PushRosNamespace(LaunchConfiguration("robot_name")),
         rviz2,
         robot_state_publisher_node,
-        joint_state_publisher_gui_node,
+        # joint_state_publisher_gui_node,
         gz,
         controllers
     ]

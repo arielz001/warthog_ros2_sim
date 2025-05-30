@@ -13,12 +13,12 @@
   ros__parameters:
     tf_frame_prefix_enable: false
 
-    left_wheel_names: ["front_left_wheel_joint, front_right_wheel_joint"]
-    right_wheel_names: ["rear_left_wheel_joint, rear_right_wheel_joint"]
+    left_wheel_names: ["front_left_wheel_joint", "rear_left_wheel_joint"]
+    right_wheel_names: ["front_right_wheel_joint", "rear_right_wheel_joint"]
+
 
     wheel_separation: 1.5
     wheel_radius: 0.3
-
 
     wheel_separation_multiplier: 1.125
 
@@ -55,7 +55,9 @@
         max_deceleration: -1.0 # m/s^2
         max_acceleration_reverse: -1.0 # m/s^2
         max_deceleration_reverse: 1.0 # m/s^2
- 
+        max_jerk: 0.0
+        min_jerk: 0.0
+
 
     angular:
       z:
@@ -65,6 +67,5 @@
         max_deceleration: -4.0 # rad/s^2
         max_acceleration_reverse: -4.0 # rad/s^2
         max_deceleration_reverse: 4.0 # rad/s^2
-
-
-
+        max_jerk: 0.0
+        min_jerk: 0.0
