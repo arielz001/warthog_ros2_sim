@@ -9,5 +9,7 @@
         "/home/ariel/Robotics/warthog_ws/install/warthog_bringup/lib/python3.12/site-packages",
         "/opt/ros/jazzy/lib/python3.12/site-packages"
     ],
-    "github.copilot.chat.codeGeneration.useInstructionFiles": true
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "ros.distro": "jazzy",
+    "cmake.sourceDirectory": "/home/ariel/Robotics/warthog_ws/src/warthog_ros2_sim/warthog_description"
 }
