@@ -135,7 +135,7 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
                 package='ros_gz_bridge',
                 executable='parameter_bridge',
                 arguments=[
-                    '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+                    '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
                 ],
        
             )
@@ -155,18 +155,19 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
         ]
     )
 
-    joint_state_publisher_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui',
-    )
+    # joint_state_publisher_gui_node = Node(
+    #     package='joint_state_publisher_gui',
+    #     executable='joint_state_publisher_gui',
+    #     name='joint_state_publisher_gui',
+    #     parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}]
+    # )
     
     
     return [
         PushRosNamespace(LaunchConfiguration("robot_name")),
         rviz2,
         robot_state_publisher_node,
-        joint_state_publisher_gui_node,
+        # joint_state_publisher_gui_node,
         gz,
         controllers
     ]

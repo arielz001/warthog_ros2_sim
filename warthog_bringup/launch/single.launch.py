@@ -33,7 +33,7 @@ def launch_args(context) -> list[LaunchDescriptionEntity]:
 
     declared_args.append(DeclareLaunchArgument(
         "pos_z",
-        default_value="0.4",
+        default_value="0.5",
         description="Start position in z axis (only for simulation environments)."
     ))
 
