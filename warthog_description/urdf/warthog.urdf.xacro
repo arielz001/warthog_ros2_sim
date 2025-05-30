@@ -555,7 +555,6 @@
 
 
     <gazebo>
-      <!-- inserted at the top level of the <model> tag -->
       <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
         <render_engine>ogre</render_engine>
       </plugin>

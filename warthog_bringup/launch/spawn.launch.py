@@ -84,7 +84,9 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
             {"robot_description": robot_desc_content},
             {"use_sim_time": LaunchConfiguration("use_sim_time")}
             # {"frame_prefix": f'{LaunchConfiguration("robot_name").perform(context)}/'},
-        ]
+        ],
+        
+
     )
 
     
