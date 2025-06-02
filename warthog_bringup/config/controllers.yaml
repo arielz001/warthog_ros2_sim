@@ -1,0 +1,72 @@
+/**/controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    diff_drive_base_controller:
+      type: diff_drive_controller/DiffDriveController
+
+
+/**/diff_drive_base_controller:
+  ros__parameters:
+    tf_frame_prefix_enable: false
+
+    left_wheel_names: ["front_left_wheel_joint", "rear_left_wheel_joint"]
+    right_wheel_names: ["front_right_wheel_joint", "rear_right_wheel_joint"]
+
+
+    wheel_separation: 1.5
+    wheel_radius: 0.3
+
+    wheel_separation_multiplier: 1.125
+
+    left_wheel_radius_multiplier: 1.0  
+    right_wheel_radius_multiplier: 1.05 
+
+    publish_rate: 20.0
+    odom_frame_id: odom
+    base_frame_id: base_link
+    pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 0.03]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 1000000.0, 1000000.0, 0.03] 
+
+
+    open_loop: false
+
+    # Update odometry from velocity
+    #! IMPORTANT at the time of writing it is bugged on deb galactic version and require fork of diff drive controller installed from sources
+    # in sensor fusion only velocity is used and with this setting it is more accurate
+    position_feedback: true
+    # velocity computation filtering
+    velocity_rolling_window_size: 2
+
+    enable_odom_tf: true
+
+    cmd_vel_timeout: 0.5
+    #publish_limited_velocity: true
+
+    # Velocity and acceleration limits
+    linear:
+      x:
+        max_velocity: 1.0 # m/s
+        min_velocity: -1.0 # m/s
+        max_acceleration: 1.0 # m/s^2
+        max_deceleration: -1.0 # m/s^2
+        max_acceleration_reverse: -1.0 # m/s^2
+        max_deceleration_reverse: 1.0 # m/s^2
+        max_jerk: 0.0
+        min_jerk: 0.0
+
+
+    angular:
+      z:
+        max_velocity: 3.14 # rad/s
+        min_velocity: -3.14 # rad/s
+        max_acceleration: 4.0 # rad/s^2
+        max_deceleration: -4.0 # rad/s^2
+        max_acceleration_reverse: -4.0 # rad/s^2
+        max_deceleration_reverse: 4.0 # rad/s^2
+
+
+
