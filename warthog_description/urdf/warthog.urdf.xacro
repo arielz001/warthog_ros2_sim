@@ -283,6 +283,7 @@
     </joint>
 
 
+    
     <!-- ======================================================= -->
     <!--                       Diff Unit                        -->
     <!-- ======================================================= -->
@@ -327,7 +328,7 @@
         </collision>
         </link>
 
-        <joint name="${prefix}_diff_unit_joint" type="revolute">
+        <joint name="${prefix}_diff_unit_joint" type="fixed">
             <limit upper="0.4" lower="-0.4" effort="100" velocity="1"/>
             <parent link="chassis_link"/>
             <child link="${prefix}_diff_unit_link"/>
@@ -505,7 +506,6 @@
     </joint>  
 
     </xacro:macro>
-
 
 
     <xacro:diff_unit prefix="left" side="1"/>
