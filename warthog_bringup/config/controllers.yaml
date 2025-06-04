@@ -11,6 +11,11 @@
 
 /**/diff_drive_base_controller:
   ros__parameters:
+    use_stamped_vel: false
+
+    twist:
+      command_topic: /cmd_vel   
+      
     tf_frame_prefix_enable: false
 
     left_wheel_names: ["front_left_wheel_joint", "rear_left_wheel_joint"]

@@ -96,8 +96,8 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
                 output='screen',
                 parameters=[
                     {"use_sim_time": LaunchConfiguration("use_sim_time")}
-                ]
-            ),
+                ],
+            )
         ]
     )
 

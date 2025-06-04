@@ -558,6 +558,7 @@
       <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
         <ros>
           <namespace>warthog</namespace>
+          <!-- <remapping>/warthog/diff_drive_base_controller/cmd_vel_unstamped:=cmd_vel</remapping> -->
         </ros>
         <parameters>$(find warthog_bringup)/config/controllers.yaml</parameters>
       </plugin>
