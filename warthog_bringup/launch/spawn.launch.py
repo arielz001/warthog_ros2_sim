@@ -78,7 +78,6 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        # remappings=[('/warthog/diff_drive_base_controller/cmd_vel', '/cmd_vel')],
         output="both",
         parameters=[
             {"robot_description": robot_desc_content},
@@ -97,8 +96,8 @@ def launch_setup(context) -> list[LaunchDescriptionEntity]:
                 output='screen',
                 parameters=[
                     {"use_sim_time": LaunchConfiguration("use_sim_time")}
-                ]
-            ),
+                ],
+            )
         ]
     )
 
