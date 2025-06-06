@@ -1,0 +1,105 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="chassis_length" value="1.35" />
+    <xacro:property name="chassis_width" value="0.70" />
+    <xacro:property name="chassis_height" value="0.30" />
+    <xacro:property name="chassis_mass" value="100" />
+
+    <!-- ======================================================= -->
+    <!--                       BASE                          -->
+    <!-- ======================================================= -->
+    <link name="base_link" />
+
+    <joint name="base_link_joint" type="fixed">
+        <origin xyz="0 0 0.025" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="chassis_link" />
+    </joint>
+
+    <!-- ======================================================= -->
+    <!--                       Chassis                          -->
+    <!-- ======================================================= -->
+
+    <!-- Chassis link (black part) -->
+    <link name="chassis_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${chassis_mass}" />
+            <xacro:box_inertia
+                m="${chassis_mass}"
+                x="${chassis_length}"
+                y="${chassis_width}"
+                z="${chassis_height}"
+            />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/chassis.stl"
+                />
+            </geometry>
+            <material name="black"><color
+                    rgba="0.15 0.15 0.15 1.0"
+                /></material>
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/e-stop.stl"
+                />
+            </geometry>
+            <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/chassis-collision.stl"
+                />
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- ======================================================= -->
+    <!--                       Diff Link                         -->
+    <!-- this is only for put the floating diff in the robot     -->
+    <!-- ======================================================= -->
+    <link name="diff_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/diff-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/susp-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/susp-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+    </link>
+
+    <!-- Joint to attach the diff link to the chassis -->
+    <joint name="diff_link_joint" type="fixed">
+        <parent link="chassis_link" />
+        <child link="diff_link" />
+        <origin xyz="-0.5826 0 0.24979" rpy="0 0 0" />
+    </joint>
+</robot>
