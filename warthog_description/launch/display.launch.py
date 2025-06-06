@@ -43,7 +43,10 @@ def launch_setup(context):
     
     return [
         robot_state_publisher_node,
+<<<<<<< HEAD
         joint_state_publisher_node,
+=======
+>>>>>>> f636ff2455d6aba16e7fc4cabff930837ebe0cd8
         joint_state_publisher_gui_node,
         rviz_node,
     ]
