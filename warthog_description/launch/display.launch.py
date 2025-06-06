@@ -43,6 +43,7 @@ def launch_setup(context):
     
     return [
         robot_state_publisher_node,
+        joint_state_publisher_node,
         joint_state_publisher_gui_node,
         rviz_node,
     ]
