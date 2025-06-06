@@ -1,0 +1,240 @@
+<?xml version="1.0" ?>
+<robot name="warthog" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find warthog_description)/urdf/base.xacro" />
+    <xacro:include filename="$(find warthog_description)/urdf/utils.xacro" />
+
+    <!--
+        Optional paint colors.
+        Available colors:
+        - yellow (default)
+        - orange
+        - olive
+        - sand
+    -->
+
+    <material name="dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
+    <material name="light_grey"><color rgba="0.4 0.4 0.4 1.0" /></material>
+    <material name="yellow"><color rgba="0.95 0.816 0.082 1.0" /></material>
+    <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
+    <material name="white"><color rgba="0.9 0.9 0.9 1.0" /></material>
+    <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
+
+    <xacro:unless value="$(optenv WARTHOG_TRACKS 0)">
+        <xacro:wheel prefix="front" side="left">
+            <origin
+                xyz="${axle_x_offset*1} ${axle_y_offset*1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:wheel>
+        <xacro:wheel prefix="front" side="right">
+            <origin
+                xyz="${axle_x_offset*1} ${axle_y_offset*-1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:wheel>
+        <xacro:wheel prefix="rear" side="left">
+            <origin
+                xyz="${axle_x_offset*-1} ${axle_y_offset*1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:wheel>
+        <xacro:wheel prefix="rear" side="right">
+            <origin
+                xyz="${axle_x_offset*-1} ${axle_y_offset*-1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:wheel>
+    </xacro:unless>
+
+    <xacro:if value="$(optenv WARTHOG_TRACKS 0)">
+        <xacro:track prefix="front" side="left">
+            <origin
+                xyz="${axle_x_offset*1} ${axle_y_offset*1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:track>
+        <xacro:track prefix="front" side="right">
+            <origin
+                xyz="${axle_x_offset*1} ${axle_y_offset*-1} ${axle_z_offset}"
+                rpy="0 0 0"
+            />
+        </xacro:track>
+        <xacro:track prefix="rear" side="left">
+            <origin
+                xyz="${axle_x_offset*-1} ${axle_y_offset*1} ${axle_z_offset}"
+                rpy="0 0 ${PI}"
+            />
+        </xacro:track>
+        <xacro:track prefix="rear" side="right">
+            <origin
+                xyz="${axle_x_offset*-1} ${axle_y_offset*-1} ${axle_z_offset}"
+                rpy="0 0 ${PI}"
+            />
+        </xacro:track>
+    </xacro:if>
+
+    <!-- ======================================================= -->
+    <!--                       BASE                          -->
+    <!-- ======================================================= -->
+    <link name="base_link" />
+
+    <joint name="base_link_joint" type="fixed">
+        <origin xyz="0 0 0.025" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="chassis_link" />
+    </joint>
+
+
+  <!-- ======================================================= -->
+  <!--                       Chassis                          -->
+  <!-- ======================================================= -->
+
+   <!-- Chassis link (black part) -->
+    <link name="chassis_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${chassis_mass}" />
+            <xacro:box_inertia
+                m="${chassis_mass}"
+                x="${chassis_length}"
+                y="${chassis_width}"
+                z="${chassis_height}"
+            />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/chassis.stl"
+                />
+            </geometry>
+            <material name="black"><color
+                    rgba="0.15 0.15 0.15 1.0"
+                /></material>
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/e-stop.stl"
+                />
+            </geometry>
+            <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/chassis-collision.stl"
+                />
+            </geometry>
+        </collision>
+    </link>
+
+
+  <!-- ======================================================= -->
+  <!--                       Diff Link                         -->
+  <!-- this is only for put the floating diff in the robot     -->
+  <!-- ======================================================= -->
+    <link name="diff_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/diff-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/susp-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://warthog_description/meshes/susp-link.stl"
+                />
+            </geometry>
+            <material name="light_grey" />
+        </visual>
+    </link>
+
+    <!-- Joint to attach the diff link to the chassis -->
+    <joint name="diff_link_joint" type="fixed">
+        <parent link="chassis_link" />
+        <child link="diff_link" />
+        <origin xyz="-0.5826 0 0.24979" rpy="0 0 0" />
+    </joint>
+
+    <!-- instancia de unidad diferencial -->
+    <xacro:diff_unit prefix="left" side="1" />
+    <xacro:diff_unit prefix="right" side="-1" />
+
+
+    <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+        <plugin>ign_ros2_control/IgnitionSystem</plugin>
+    </hardware>
+    <joint name="front_left_wheel_joint">
+        <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+    </joint>
+    <joint name="front_right_wheel_joint">
+        <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+    </joint>
+    <joint name="rear_left_wheel_joint">
+        <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+    </joint>
+    <joint name="rear_right_wheel_joint">
+        <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+    </joint>
+    </ros2_control>
+
+
+    <gazebo>
+      <plugin
+            filename="ignition-gazebo-sensors-system"
+            name="ignition::gazebo::systems::Sensors"
+        >
+        <render_engine>ogre</render_engine>
+      </plugin>
+      <plugin
+            filename="ign_ros2_control-system"
+            name="ign_ros2_control::IgnitionROS2ControlPlugin"
+        >
+        <ros>
+            <namespace>warthog</namespace>
+            <!-- <remapping>/warthog/diff_drive_base_controller/cmd_vel:=cmd_vel</remapping> -->
+        </ros>
+        <parameters>$(find warthog_bringup)/config/controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+    <!-- sudo apt install ros-humble-ros2-controllers ros-humble-ros2-control sudo apt-get install ros-humble-ign-ros2-control-->
+</robot>
